@@ -6,6 +6,22 @@ import java.util.stream.Collectors;
 
 public class ArrayProblems {
 
+    public static void main(String[] args) {
+        ArrayProblems arrayProblems = new ArrayProblems();
+        int[] arr = {123, -3, -2, 12, 99, 9};
+        System.out.println(arrayProblems.findBiggestSingleDigit(arr));
+    }
+
+    /**
+     * Find the biggest single-digit number that occurs in an array
+     * @param arr
+     * @return
+     */
+    public Integer findBiggestSingleDigit(int[] arr) {
+        return Arrays.stream(arr)
+            .filter(number -> number < 10 && number > -10)
+            .max().orElse(-1);
+    }
     /**
      * LC 238. Compute the product of everything in an array except self
      * @param nums
