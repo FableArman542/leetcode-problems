@@ -102,3 +102,7 @@ fabric.properties
 ## Plugin-specific files:
 
 # IntelliJ
+
+.gradle/
+build/
+*/build/
