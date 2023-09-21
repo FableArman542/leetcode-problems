@@ -1,10 +1,39 @@
 package pointers;
 
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
 public class StringProblems {
+
+    public static void main(String[] args) {
+        StringProblems stringProblems = new StringProblems();
+        System.out.println(stringProblems.parenthesisValidation("function(a ()))"));
+    }
+
+    /**
+     * Validate parenthesis in a string
+     * @param s
+     * @return
+     */
+    public boolean parenthesisValidation(String s) {
+        var stack = new LinkedList<Character>();
+        s = s.replaceAll("[^(|)]", ""); // enhancement
+        System.out.println(s);
+        var arr = s.toCharArray();
+
+        for (int i = 0; i < arr.length; ++i) {
+            if (arr[i] == '(') {
+                stack.addLast(arr[i]);
+            } else if (arr[i] == ')') {
+                if (stack.size() == 0) return false;
+                stack.removeLast();
+            }
+        }
+
+        return stack.size() == 0;
+    }
 
     /**
      * Validate if a string is a palindrome

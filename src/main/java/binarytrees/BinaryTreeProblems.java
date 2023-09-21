@@ -7,6 +7,23 @@ import java.util.Objects;
 public class BinaryTreeProblems {
 
     /**
+     * LC 226. Invert Binary Tree
+     * @param root
+     * @return
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null || root.left == null && root.right == null) return root;
+
+        TreeNode left = root.left;
+        root.left = root.right;
+        root.right = left;
+
+        if (root.left != null) root.left = invertTree(root.left);
+        if (root.right != null) root.right =  invertTree(root.right);
+        return root;
+    }
+
+    /**
      * LC 872. Check if two trees are leaf-similar
      * @param root1
      * @param root2
