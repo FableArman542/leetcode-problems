@@ -1,9 +1,8 @@
 package pointers;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ArrayProblems {
@@ -11,7 +10,87 @@ public class ArrayProblems {
     public static void main(String[] args) {
         ArrayProblems arrayProblems = new ArrayProblems();
         int[] arr = {123, -3, -2, 12, 99, 9};
-        System.out.println(arrayProblems.findBiggestSingleDigit(arr));
+//        System.out.println(arrayProblems.findBiggestSingleDigit(arr));
+//        List<int[]> coordinates = generateCircleCoordinates(0, 0, 3);
+//        for (int[] coordinate : coordinates) {
+//            System.out.println("(" + coordinate[0] + ", " + coordinate[1] + ")");
+//        }
+
+//        System.out.println(generateCircleCoordinates(0, 0, 3, 4));
+        reverseArray(arr);
+
+//        System.out.println(Arrays.toString(arr));
+
+        var a = -2147483648;
+        long l = a;
+
+        System.out.println(l*(-1));
+    }
+
+    /**
+     * LC 7. Reverse Integer
+     * @param x
+     * @return
+     */
+    public int reverse(int x) {
+        if (x == 0 || x/10 == x) return 0;
+        StringBuilder sb = new StringBuilder();
+        long l = x;
+        Boolean isNegative = l < 0;
+        if (isNegative) l = l * (-1);
+        while(l > 0) {
+            sb.append("" + l % 10);
+            l = l/10;
+        }
+        if (Long.parseLong(sb.toString()) > Integer.MAX_VALUE) {
+            return 0;
+        }
+        return isNegative ? Integer.parseInt("-" + sb.toString()) : Integer.parseInt(sb.toString());
+    }
+
+    /**
+     * LC 344. Reverse String
+     * @param arr
+     */
+    public static void reverseString(String[] arr) {
+        int lP = 0, rP = arr.length - 1;
+
+        while (lP < rP) {
+            var temp = arr[lP];
+            arr[lP] = arr[rP];
+            arr[rP] = temp;
+            ++ lP;
+            -- rP;
+        }
+    }
+
+    public static List<List<Double>> generateCircleCoordinates(int xx, int yy, int radius, double nSegments) {
+        List<List<Double>> coordinates = new ArrayList<>();
+
+        for (int i = 0; i < nSegments; ++i) {
+            var angle = Math.toRadians(((double)i/nSegments) * 360);
+            double x = Math.ceil(Math.cos(angle) * radius);
+            double y = Math.ceil(Math.sin(angle) * radius);
+            coordinates.add(List.of(x + xx, y + yy));
+        }
+
+        return coordinates;
+    }
+
+    public void wiggleSort(int[] nums) {
+        for (int i = 0; i < nums.length; ++i) {
+            if (i % 2 != 0 && (nums[i] < nums[i-1])) {
+                // odd
+                var temp = nums[i];
+                nums[i] = nums[i-1];
+                nums[i-1] = temp;
+
+            } else if (i > 0 && i % 2 == 0 && (nums[i] > nums[i-1])) {
+                var temp = nums[i];
+                nums[i] = nums[i-1];
+                nums[i-1] = temp;
+            }
+        }
     }
 
     /**
@@ -112,6 +191,9 @@ public class ArrayProblems {
     private int calculateArea(int l, int r, int lV, int rV) {
         int lowestVal = Math.min(lV, rV);
         int dist = r - l;
+        BiFunction<Integer, Integer, Boolean> a = (val, side) -> val > side;
+
+
         return lowestVal * dist;
     }
 

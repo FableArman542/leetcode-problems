@@ -1,15 +1,90 @@
 package pointers;
 
-import java.util.LinkedList;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StringProblems {
 
     public static void main(String[] args) {
+//        StringBuilder sb = new StringBuilder("label");
+//        sb.deleteCharAt(0);
+//        System.out.println(sb.indexOf("l"));
+//        System.out.println(sb.toString());
         StringProblems stringProblems = new StringProblems();
-        System.out.println(stringProblems.parenthesisValidation("function(a ()))"));
+//        System.out.println(stringProblems.parenthesisValidation("function(a ()))"));
+//        System.out.println(stringProblems.commonChars(new String[] {"bella", "label", "roller"}));
+
+        System.out.println("String: " + stringProblems.convertToString(1023432400));
+    }
+
+    /**
+     * Convert an integer to a String
+     * @param number
+     * @return
+     */
+    public String convertToString(int number) {
+        LinkedList<Character> characters = new LinkedList<>();
+        while(number > 0) {
+            int n = number % 10;
+            char c = (char) (n+48);
+            characters.addFirst(c);
+            number = number / 10;
+        }
+        StringBuilder sb = new StringBuilder();
+        characters.forEach(sb::append);
+        return sb.toString();
+    }
+
+    /**
+     * LC 1002. Find Common Characters
+     * Given array `words` return all common characters that show up in all strings including duplicates
+     * @param words
+     * @return
+     */
+    public List<String> commonChars1(String[] words) {
+        if (words.length == 0) return Collections.emptyList();
+        List<String> res = new ArrayList<>();
+        List<StringBuilder> wordsStream = Arrays.stream(words)
+                .map(StringBuilder::new)
+                .collect(Collectors.toList());
+        String[] f = wordsStream.remove(0).toString().split("");
+        for (String str : f) {
+            if (wordsStream.stream().allMatch(w -> {
+                int idx = w.indexOf(str);
+                if (idx != -1) w.deleteCharAt(idx);
+                return idx != -1;
+            })) {
+                res.add(str);
+            }
+        }
+        return res;
+    }
+
+    public List<String> commonChars(String[] words) {
+        if (words.length == 0) return Collections.emptyList();
+        List<String> res = new ArrayList<>();
+        int[] minFrequencies = new int[26];
+        Arrays.fill(minFrequencies, Integer.MAX_VALUE);
+
+        for (String current: words) {
+            int[] minCur = new int[26];
+            for (char c: current.toCharArray()) {
+                minCur[c-'a'] ++;
+            }
+            for (int i = 0; i < minFrequencies.length; ++i) {
+                minFrequencies[i] = Math.min(minCur[i], minFrequencies[i]);
+            }
+        }
+
+        for (int i = 0; i < minFrequencies.length; ++i) {
+            while (minFrequencies[i] > 0) {
+                res.add(String.valueOf((char)(i+'a')));
+                minFrequencies[i] --;
+            }
+        }
+
+        return res;
     }
 
     /**

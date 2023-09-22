@@ -7,6 +7,21 @@ import java.util.Objects;
 public class BinaryTreeProblems {
 
     /**
+     * LC 98. Validate Binary Search Tree
+     * @param root
+     * @return
+     */
+    public boolean isValidBST(TreeNode root) {
+        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    public boolean isValidBST(TreeNode root, long min,  long max) {
+        return  (root.val > min && root.val < max)
+                && (root.left != null ? isValidBST(root.left, min, root.val) : true)
+                && (root.right != null ? isValidBST(root.right, root.val, max) : true);
+    }
+
+    /**
      * LC 226. Invert Binary Tree
      * @param root
      * @return
