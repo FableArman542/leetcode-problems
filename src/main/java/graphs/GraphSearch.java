@@ -67,30 +67,60 @@ public class GraphSearch {
         }
     }
 
-    class Tuple {
-        int i;
-        int j;
-        public Tuple(int i, int j) {
-            this.i = i;
-            this.j = j;
-        }
-
-        @Override
-        public int hashCode() { return i ^ j; }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj instanceof Tuple) {
-                Tuple t = (Tuple) obj;
-                return t.i == i && t.j == j;
+    /**
+     * LC 200. Number of islands
+     * @param grid
+     * @return
+     */
+    public int numIslands(char[][] grid) {
+        int nIslands = 0;
+        for (int y = 0; y < grid.length; ++y) {
+            for (int x = 0; x < grid[y].length; ++x) {
+                if (grid[y][x] == '1') {
+                    dfsIsland(grid, x, y);
+                    nIslands ++;
+                }
             }
-            return false;
         }
+        return nIslands;
+    }
 
-        @Override
-        public String toString() {
-            return "[" + i + ", " + j +"]";
+    private void dfsIsland(char[][] grid, int x, int y) {
+        if (x < 0 || x >= grid[0].length || y < 0 || y >= grid.length
+                || grid[y][x] != '1') return;
+        if (grid[y][x] == '1') grid[y][x] = '0';
+        dfsIsland(grid, x-1, y);
+        dfsIsland(grid, x+1, y);
+        dfsIsland(grid, x, y-1);
+        dfsIsland(grid, x, y+1);
+    }
+
+    /**
+     * LC 419. Battleships in a board
+     * @param board
+     * @return
+     */
+    public int countBattleshipsEasier(char[][] board) {
+        int ships = 0;
+        for (int y = 0; y < board.length; ++y) {
+            for (int x = 0; x < board[0].length; ++x) {
+                if (board[y][x] == 'X') {
+                    dfsShips(board, x, y);
+                    ++ ships;
+                }
+            }
         }
+        return ships;
+    }
+
+    private void dfsShips(char[][] board, int x, int y) {
+        // If out of bounds or water return
+        if (x < 0 || x >= board[0].length || y < 0 || y >= board.length || board[y][x] != 'X') return;
+        if (board[y][x] == 'X') board[y][x] = '.';
+        dfsShips(board, x-1, y);
+        dfsShips(board, x+1, y);
+        dfsShips(board, x, y-1);
+        dfsShips(board, x, y+1);
     }
 
     public int countBattleships(char[][] board) {
@@ -122,5 +152,30 @@ public class GraphSearch {
         }
     }
 
+    class Tuple {
+        int i;
+        int j;
+        public Tuple(int i, int j) {
+            this.i = i;
+            this.j = j;
+        }
+
+        @Override
+        public int hashCode() { return i ^ j; }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Tuple) {
+                Tuple t = (Tuple) obj;
+                return t.i == i && t.j == j;
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "[" + i + ", " + j +"]";
+        }
+    }
 
 }

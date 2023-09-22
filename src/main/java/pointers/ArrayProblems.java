@@ -17,7 +17,7 @@ public class ArrayProblems {
 //        }
 
 //        System.out.println(generateCircleCoordinates(0, 0, 3, 4));
-        reverseArray(arr);
+//        reverseArray(arr);
 
 //        System.out.println(Arrays.toString(arr));
 
