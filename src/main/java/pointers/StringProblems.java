@@ -7,15 +7,20 @@ import java.util.stream.Collectors;
 public class StringProblems {
 
     public static void main(String[] args) {
+        StringProblems stringProblems = new StringProblems();
 //        StringBuilder sb = new StringBuilder("label");
 //        sb.deleteCharAt(0);
 //        System.out.println(sb.indexOf("l"));
 //        System.out.println(sb.toString());
-        StringProblems stringProblems = new StringProblems();
 //        System.out.println(stringProblems.parenthesisValidation("function(a ()))"));
 //        System.out.println(stringProblems.commonChars(new String[] {"bella", "label", "roller"}));
+//        System.out.println("String: " + stringProblems.convertToString(1023432400));
+        System.out.println(stringProblems.removeRepeatedSpacesFromString("test        asdfasdasd asdasd    sdgsdg  sdf  sdff"));
+    }
 
-        System.out.println("String: " + stringProblems.convertToString(1023432400));
+    public String removeRepeatedSpacesFromString(String s) {
+
+        return s.replaceAll("\\s+", " ");
     }
 
     /**

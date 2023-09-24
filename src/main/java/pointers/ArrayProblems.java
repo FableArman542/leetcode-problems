@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ArrayProblems {
 
@@ -20,11 +21,20 @@ public class ArrayProblems {
 //        reverseArray(arr);
 
 //        System.out.println(Arrays.toString(arr));
+        int[] a = {-1, 0, 21, 7, 4};
+        System.out.println(arrayProblems.getValueWithSameIndex(a));
+    }
 
-        var a = -2147483648;
-        long l = a;
+    public int getBiggestValue(List<Integer> list) {
+        return list.stream().max(Integer::compareTo).orElse(-1);
+    }
 
-        System.out.println(l*(-1));
+    public int getValueWithSameIndex(int[] arr) {
+        return IntStream.range(0, arr.length)
+                .filter(i -> arr[i] == i)
+                .map(i -> arr[i])
+                .boxed()
+                .findFirst().orElse(-1);
     }
 
     /**
