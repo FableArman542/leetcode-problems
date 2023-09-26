@@ -21,8 +21,22 @@ public class ArrayProblems {
 //        reverseArray(arr);
 
 //        System.out.println(Arrays.toString(arr));
-        int[] a = {-1, 0, 21, 7, 4};
-        System.out.println(arrayProblems.getValueWithSameIndex(a));
+//        int[] a = {-1, 0, 21, 7, 4};
+//        System.out.println(arrayProblems.getValueWithSameIndex(a));
+
+        System.out.println(arrayProblems.fibonnaci(6));
+        PriorityQueue<Integer>a = new PriorityQueue<>();
+    }
+
+    public int fibonnaci(int n) {
+        int[] stored = new int[n + 1];
+        return fibonnaciSequence(n, stored);
+    }
+
+    public int fibonnaciSequence(int n, int[] stored) {
+        if (n < 2) return n;
+        if (stored[n] != 0) return stored[n];
+        return fibonnaciSequence(n- 1, stored) + fibonnaciSequence(n - 2, stored);
     }
 
     public int getBiggestValue(List<Integer> list) {

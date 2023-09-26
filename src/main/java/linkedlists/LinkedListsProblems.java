@@ -5,6 +5,35 @@ import java.util.Objects;
 public class LinkedListsProblems {
 
     /**
+     * LC 2130. Maximum twin sum of a Linkedlist
+     * @param head
+     * @return
+     */
+    public int pairSum(ListNode head) {
+
+        ListNode a = head, b = head.next, c = head;
+        // get center of linked list and reverse first half
+        while(c.next.next != null) {
+            c = c.next.next;
+
+            var temp = b.next;
+            b.next = a;
+            a = b;
+            b = temp;
+        }
+
+        int pairSum = Integer.MIN_VALUE;
+        // pointers a and b are set
+        while(a != null && b != null) {
+            pairSum = Math.max(pairSum, a.val + b.val);
+            a = a.next;
+            b = b.next;
+        }
+
+        return pairSum;
+    }
+
+    /**
      * LC 160. Intersection of Two Linked Lists
      * @param headA
      * @param headB

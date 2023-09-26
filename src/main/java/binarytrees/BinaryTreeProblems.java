@@ -5,6 +5,31 @@ import java.util.*;
 public class BinaryTreeProblems {
 
     /**
+     * LC 199. Binary Tree Right Side View
+     * @param root
+     * @return
+     */
+    public List<Integer> rightSideView(TreeNode root) {
+        if (root == null) return Collections.emptyList();
+
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        List<Integer> res = new ArrayList<>();
+        TreeNode pointer = root;
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            TreeNode node = queue.removeFirst();
+            if (node.left != null) queue.addLast(node.left);
+            if (node.right != null) queue.addLast(node.right);
+            if (pointer == node) {
+                res.add(pointer.val);
+                pointer = queue.peekLast();
+            }
+        }
+
+        return res;
+    }
+
+    /**
      * LC 101. Symmetric Tree
      * @param root
      * @return
