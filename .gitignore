@@ -1,6 +1,8 @@
 # From https://github.com/github/gitignore/blob/master/Gradle.gitignore
 .gradle/
+.gradle/7.5.1
 build/
+build/classes/
 .mtj.tmp/
 # IntelliJ
 /out/
