@@ -5,6 +5,40 @@ import java.util.*;
 public class BinaryTreeProblems {
 
     /**
+     * LC 1161. Maximum Level Sum of a Binary Tree
+     * @param root
+     * @return
+     */
+    public int maxLevelSum(TreeNode root) {
+
+        int level = 1, currentLevel = 1;
+        int maxSum = root.val;
+        TreeNode pointer = root;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.addFirst(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.removeFirst();
+            if (node.left != null) queue.addLast(node.left);
+            if (node.right != null) queue.addLast(node.right);
+
+            if (node == pointer && queue.peekLast() != null) {
+                // choose a new pointer
+                pointer = queue.peekLast();
+                ++ currentLevel;
+                // check if level is replaced
+                int s = queue.stream().mapToInt(b -> b.val).sum();
+                if (s > maxSum) {
+                    maxSum = s;
+                    level = currentLevel;
+                }
+            }
+        }
+
+        return level;
+    }
+
+    /**
      * LC 199. Binary Tree Right Side View
      * @param root
      * @return

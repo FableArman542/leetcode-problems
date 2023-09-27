@@ -5,6 +5,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class ArrayProblems {
 
@@ -26,6 +27,26 @@ public class ArrayProblems {
 
         System.out.println(arrayProblems.fibonnaci(6));
         PriorityQueue<Integer>a = new PriorityQueue<>();
+    }
+
+    /**
+     * LC 2215. Find the Difference of Two Arrays
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
+        var n1 = Arrays.stream(nums1)
+                .boxed()
+                .collect(Collectors.toSet());
+        var n2 = Arrays.stream(nums2)
+                .boxed()
+                .collect(Collectors.toSet());
+
+        return List.of(
+                n1.stream().filter(n -> !n2.contains(n)).collect(Collectors.toList()),
+                n2.stream().filter(n -> !n1.contains(n)).collect(Collectors.toList())
+        );
     }
 
     public int fibonnaci(int n) {
