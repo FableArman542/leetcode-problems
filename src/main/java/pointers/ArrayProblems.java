@@ -30,6 +30,21 @@ public class ArrayProblems {
     }
 
     /**
+     * LC 1207. Unique Number of Occurrences
+     * @param arr
+     * @return
+     */
+    public boolean uniqueOccurrences(int[] arr) {
+        Map<Integer, Integer> occurences = new HashMap<>();
+
+        for(int a: arr) {
+            occurences.put(a, occurences.getOrDefault(a, 0) + 1);
+        }
+
+        return occurences.values().stream().distinct().count() == occurences.size();
+    }
+
+    /**
      * LC 2215. Find the Difference of Two Arrays
      * @param nums1
      * @param nums2
