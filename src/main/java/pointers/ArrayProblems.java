@@ -2,10 +2,8 @@ package pointers;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class ArrayProblems {
 
@@ -25,7 +23,7 @@ public class ArrayProblems {
 //        int[] a = {-1, 0, 21, 7, 4};
 //        System.out.println(arrayProblems.getValueWithSameIndex(a));
 
-        System.out.println(arrayProblems.fibonnaci(6));
+        System.out.println(arrayProblems.fibonacci(6));
         PriorityQueue<Integer>a = new PriorityQueue<>();
     }
 
@@ -64,15 +62,16 @@ public class ArrayProblems {
         );
     }
 
-    public int fibonnaci(int n) {
+    public int fibonacci(int n) {
         int[] stored = new int[n + 1];
-        return fibonnaciSequence(n, stored);
+        return fibonacciSequence(n, stored);
     }
 
-    public int fibonnaciSequence(int n, int[] stored) {
+    public int fibonacciSequence(int n, int[] stored) {
         if (n < 2) return n;
         if (stored[n] != 0) return stored[n];
-        return fibonnaciSequence(n- 1, stored) + fibonnaciSequence(n - 2, stored);
+        stored[n] = fibonacciSequence(n- 1, stored) + fibonacciSequence(n - 2, stored);
+        return stored[n];
     }
 
     public int getBiggestValue(List<Integer> list) {
