@@ -5,6 +5,30 @@ import java.util.*;
 public class BinaryTreeProblems {
 
     /**
+     * LC 1448. Count Good Nodes in Binary Tree
+     * @param root
+     * @return
+     */
+    public int goodNodes(TreeNode root) {
+        if (root == null) return 0;
+
+        List<TreeNode> goodNodes = new ArrayList<>();
+        dfsGoodNodes(root, root.val, goodNodes);
+
+        return goodNodes.size();
+    }
+
+    private void dfsGoodNodes(TreeNode node, int value, List<TreeNode> goodNodes) {
+        if (value <= node.val) {
+            goodNodes.add(node);
+            value = node.val;
+        }
+
+        if (node.left != null) dfsGoodNodes(node.left, value, goodNodes);
+        if (node.right != null) dfsGoodNodes(node.right, value, goodNodes);
+    }
+
+    /**
      * LC 1161. Maximum Level Sum of a Binary Tree
      * @param root
      * @return
