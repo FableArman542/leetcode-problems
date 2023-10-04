@@ -18,6 +18,26 @@ public class StringProblems {
         System.out.println(stringProblems.removeRepeatedSpacesFromString("test        asdfasdasd asdasd    sdgsdg  sdf  sdff"));
     }
 
+    /**
+     * LC 2390. Removing Stars From a String
+     * @param s
+     * @return
+     */
+    public String removeStars(String s) {
+        String[] chars = s.split("");
+        Stack<String> stack = new Stack<>();
+
+        for (String str : chars) {
+            if (Objects.equals(str, "*")) {
+                stack.pop();
+                continue;
+            }
+            stack.add(str);
+        }
+
+        return String.join("", stack);
+    }
+
     public String removeRepeatedSpacesFromString(String s) {
 
         return s.replaceAll("\\s+", " ");
@@ -171,6 +191,31 @@ public class StringProblems {
         }
 
         return String.join(" ", words);
+    }
+
+    /**
+     * LC 1456. Maximum Number of Vowels in a Substring of Given Length
+     * @param s
+     * @param k
+     * @return
+     */
+    public int maxVowels(String s, int k) {
+        int left = 0;
+        int sum = 0;
+        int max = Integer.MIN_VALUE;
+
+        for (int right = 0; right < s.length(); ++right) {
+            if (isVowel(s.charAt(right))) {
+                sum ++;
+            }
+
+            if (right - left + 1 == k) {
+                max = Math.max(max, sum);
+                sum = (isVowel(s.charAt(left))) ? sum-1 : sum;
+                left ++;
+            }
+        }
+        return max;
     }
 
     /**

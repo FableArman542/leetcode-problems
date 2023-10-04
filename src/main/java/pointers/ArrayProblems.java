@@ -23,8 +23,78 @@ public class ArrayProblems {
 //        int[] a = {-1, 0, 21, 7, 4};
 //        System.out.println(arrayProblems.getValueWithSameIndex(a));
 
-        System.out.println(arrayProblems.fibonacci(6));
+//        System.out.println(arrayProblems.fibonacci(6));
         PriorityQueue<Integer>a = new PriorityQueue<>();
+        System.out.println(Arrays.toString(arrayProblems.asteroidCollision(new int[] {10, 2, -5})));
+    }
+
+    /**
+     * LC 643. Maximum Average Subarray I
+     * @param nums
+     * @param k
+     * @return
+     */
+    public double findMaxAverage(int[] nums, int k) {
+        int sum = 0;
+        int max = Integer.MIN_VALUE;
+        int window = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            sum += nums[i];
+            if (i == window+(k-1)) {
+                max = Math.max(max, sum);
+                sum -= nums[window];
+                window ++;
+            }
+        }
+
+        return (double)max/(double)k;
+    }
+
+    /**
+     * LC 735. Asteroid Collision
+     * @param asteroids
+     * @return
+     */
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stack = new Stack<>();
+
+        for (int asteroid: asteroids) {
+            if (stack.isEmpty() || asteroid > 0) {
+                stack.push(asteroid);
+            } else {
+                while (!stack.isEmpty() && stack.peek() > 0 && asteroid < 0 && Math.abs(stack.peek()) < Math.abs(asteroid)) {
+                    stack.pop();
+                }
+                if (!stack.isEmpty() && asteroid == -stack.peek()) {
+                    stack.pop();
+                } else if (stack.isEmpty() || (!stack.isEmpty() && asteroid < 0 && stack.peek() < 0)) {
+                    stack.push(asteroid);
+                }
+            }
+        }
+
+        int[] res = new int[stack.size()];
+        for (int i = 0; i < res.length; ++i) {
+            res[i] = stack.remove(0);
+        }
+
+        return res;
+    }
+
+    /**
+     * LC 136. Single Number
+     * @param nums
+     * @return
+     */
+    public int singleNumber(int[] nums) {
+        Arrays.sort(nums);
+        System.out.println(Arrays.toString(nums));
+        for (int i = 0; i < nums.length; ++i) {
+            if ((i-1 < 0 || nums[i-1] != nums[i]) && (i+1 >= nums.length || nums[i+1] != nums[i])) {
+                return nums[i];
+            }
+        }
+        return -1;
     }
 
     /**
@@ -95,7 +165,7 @@ public class ArrayProblems {
         if (x == 0 || x/10 == x) return 0;
         StringBuilder sb = new StringBuilder();
         long l = x;
-        Boolean isNegative = l < 0;
+        boolean isNegative = l < 0;
         if (isNegative) l = l * (-1);
         while(l > 0) {
             sb.append("" + l % 10);

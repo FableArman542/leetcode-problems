@@ -2,6 +2,7 @@ package graphs;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GraphSearch {
 
@@ -16,6 +17,125 @@ public class GraphSearch {
 //        char[][] board = {{'X', '.', '.', 'X'}, {'.', '.', '.', 'X'}, {'.', '.', '.', 'X'}, {'.', '.', '.', '.'}};
         char[][] board = {{'X', '.', 'X'}, {'X', '.', 'X'}};
         System.out.println(graphSearch.countBattleships(board));
+    }
+
+    /**
+     * LC 1926. Nearest Exit from Entrance in Maze
+     * @param maze
+     * @param entrance
+     * @return
+     */
+    public int nearestExit(char[][] maze, int[] entrance) {
+
+        LinkedList<Node> queue = new LinkedList<>();
+        Node e = new Node(entrance[0], entrance[1]);
+        queue.addFirst(e);
+        Node pointer = e;
+        int level = 0;
+        while(!queue.isEmpty()) {
+            Node n = queue.removeFirst();
+            if (maze[n.y][n.x] == '+') {
+                if(n.equals(pointer)) {
+                    pointer = queue.peekLast();
+                }
+                continue;
+            }
+            maze[n.y][n.x] = '+';
+
+            if (n != e && (n.y == 0 || n.y == maze.length-1 || n.x == 0 || n.x == maze[0].length-1)) {
+                return level;
+            }
+
+            if ((n.y - 1 >= 0 && n.y - 1 < maze.length) && maze[n.y - 1][n.x] == '.') {
+                queue.addLast(new Node(n.y - 1, n.x));
+            }
+            if ((n.y + 1 >= 0 && n.y + 1 < maze.length) && maze[n.y + 1][n.x] == '.') {
+                queue.addLast(new Node(n.y + 1, n.x));
+            }
+            if ((n.x - 1 >= 0 && n.x - 1 < maze[0].length) && maze[n.y][n.x - 1] == '.') {
+                queue.addLast(new Node(n.y, n.x - 1));
+            }
+            if ((n.x + 1 >= 0 && n.x + 1 < maze[0].length) && maze[n.y][n.x + 1] == '.') {
+                queue.addLast(new Node(n.y, n.x + 1));
+            }
+
+            if(n.equals(pointer)) {
+                pointer = queue.peekLast();
+                level ++;
+            }
+        }
+
+        return -1;
+    }
+
+    public int nearestExit1(char[][] maze, int[] entrance) {
+
+        LinkedList<Node> queue = new LinkedList<>();
+        Set<Node> visited = new HashSet<>();
+        var e = new Node(entrance[0], entrance[1]);
+        queue.addFirst(e);
+        Node pointer = e;
+        int level = 0;
+        while(!queue.isEmpty()) {
+            var n = queue.removeFirst();
+            if (visited.contains(n)) {
+                if(n.equals(pointer)) {
+                    pointer = queue.peekLast();
+                }
+                continue;
+            }
+            visited.add(n);
+
+            if (n != e && (n.y == 0 ||n.y == maze.length-1 || n.x == 0 || n.x == maze[0].length-1)) {
+                return level;
+            }
+
+            // expand the node's neighbours
+            Node up = new Node(n.y - 1, n.x);
+            Node down = new Node(n.y + 1, n.x);
+            Node left = new Node(n.y, n.x - 1);
+            Node right = new Node(n.y, n.x + 1);
+
+            if ((up.y >= 0 && up.y < maze.length) && maze[up.y][up.x] == '.' && !visited.contains(up)) {
+                queue.addLast(up);
+            }
+            if ((down.y >= 0 && down.y < maze.length) && maze[down.y][down.x] == '.' && !visited.contains(down)) {
+                queue.addLast(down);
+            }
+            if ((left.x >= 0 && left.x < maze[0].length) && maze[left.y][left.x] == '.' && !visited.contains(left)) {
+                queue.addLast(left);
+            }
+            if ((right.x >= 0 && right.x < maze[0].length) && maze[right.y][right.x] == '.' && !visited.contains(right)) {
+                queue.addLast(right);
+            }
+
+            if(n.equals(pointer)) {
+                pointer = queue.peekLast();
+                level ++;
+            }
+        }
+
+        return -1;
+    }
+
+    class Node {
+        int x, y;
+        Node (int y, int x) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int hashCode() {
+            return x ^ y;
+        }
+
+        public boolean equals(Object obj) {
+            if (obj instanceof Node) {
+                Node other = (Node) obj;
+                return other.x == this.x && other.y == this.y;
+            }
+            return false;
+        }
     }
 
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
@@ -151,6 +271,69 @@ public class GraphSearch {
             expandNode(board, i+ip, j+jp, ip, jp, visitedNodes);
         }
     }
+
+    /**
+     * LC 1466. Reorder Routes to Make All Paths Lead to the City Zero
+     * @param n
+     * @param connections
+     * @return
+     */
+    public int minReorder(int n, int[][] connections) {
+        // create edges
+        Map<Integer, List<int[]>> adj = new HashMap<>();
+        // Fill adjacency matrix
+        for (int[] connection : connections) {
+            List<int[]> a = adj.getOrDefault(connection[0], new ArrayList<int[]>());
+            a.add(new int[] {connection[1], 1});
+            adj.put(connection[0], a);
+
+            List<int[]> b = adj.getOrDefault(connection[1], new ArrayList<int[]>());
+            b.add(new int[] {connection[0], 0});
+            adj.put(connection[1], b);
+        }
+
+        return dfs(0, -1, adj, 0);
+    }
+
+    private int dfs(int n, int parent, Map<Integer, List<int[]>> adj, int changes) {
+        for (int[] neighbour : adj.getOrDefault(n, new ArrayList<int[]>())) {
+            if (neighbour[0] != parent) {
+                changes += neighbour[1];
+                changes = dfs(neighbour[0], n, adj, changes);
+            }
+        }
+        return changes;
+    }
+
+//    public int minReorder(int n, int[][] connections) {
+//        // create edges
+//        Set<Tuple> edges = Arrays.stream(connections)
+//                .map(c -> new Tuple(c[0], c[1]))
+//                .collect(Collectors.toSet());
+//        List<List<Integer>> neighbours = IntStream.range(0, n+1)
+//                .mapToObj(i -> edges.stream()
+//                        .filter(e -> e.i == i || e.j == i)
+//                        .map(e -> e.i == i ? e.j : e.i)
+//                        .collect(Collectors.toList()))
+//                .collect(Collectors.toList());
+//        Set<Integer> visited = new HashSet<>();
+//        int changes = 0;
+//
+//        dfs(0, edges, neighbours, visited, changes);
+//        return changes;
+//    }
+//
+//    private void dfs(int n, Set<Tuple> edges, List<List<Integer>> neighbours, Set<Integer> visited, int changes) {
+//        // get neighbours
+//        visited.add(n);
+//        for (int neighbour: neighbours.get(n)) {
+//            if (visited.contains(neighbour)) continue;
+//            if (!edges.contains(new Tuple(neighbour, n))) {
+//                ++ changes;
+//            }
+//            dfs(neighbour, edges, neighbours, visited, changes);
+//        }
+//    }
 
     class Tuple {
         int i;

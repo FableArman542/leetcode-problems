@@ -1,6 +1,10 @@
 package linkedlists;
 
+import algithms.LinkedListAlg;
+
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class LinkedListsProblems {
 
@@ -79,6 +83,50 @@ public class LinkedListsProblems {
         }
 
         return head;
+    }
+
+    /**
+     * LC 328. Odd Even Linked List
+     * @param head
+     * @return
+     */
+    public ListNode oddEvenList(ListNode head) {
+
+        if (head == null || head.next == null || head.next.next == null) return head;
+
+        ListNode odd = head;
+        ListNode start = head;
+        ListNode even = odd.next;
+        ListNode evenHead = even;
+
+        while(odd.next != null && even.next != null) {
+            odd.next = even.next;
+            odd = odd.next;
+            even.next = odd.next;
+            even = even.next;
+        }
+
+        odd.next = evenHead;
+
+        return start;
+
+    }
+
+    /**
+     * LC 141. Linked List Cycle
+     * @param head
+     * @return
+     */
+    public boolean hasCycle(ListNode head) {
+        Set<ListNode> visited = new HashSet<>();
+        return check(head, visited);
+    }
+
+    private boolean check(ListNode head, Set<ListNode> visited) {
+        if (head == null) return false;
+        if (visited.contains(head)) return true;
+        visited.add(head);
+        return check(head.next, visited);
     }
 
     class ListNode {

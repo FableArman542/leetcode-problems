@@ -5,6 +5,37 @@ import java.util.*;
 public class BinaryTreeProblems {
 
     /**
+     * LC 437. Path Sum III
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    Map<Long, Integer> prefixSum;
+    Integer res;
+    public int pathSum(TreeNode root, int targetSum) {
+        prefixSum = new HashMap<>();
+        res = 0;
+        dfsPathSum(root, 0L, targetSum);
+        return res;
+    }
+
+    private void dfsPathSum(TreeNode node, Long prev, int target) {
+        if (node == null) return;
+        Long prefix = node.val + prev;
+
+        // Update result if needed
+        res += prefixSum.getOrDefault(prefix-target, 0);
+        if (prefix == target) res ++;
+
+        prefixSum.put(prefix, prefixSum.getOrDefault(prefix, 0) + 1);
+
+        dfsPathSum(node.left, prefix, target);
+        dfsPathSum(node.right, prefix, target);
+
+        prefixSum.put(prefix, prefixSum.get(prefix)-1);
+    }
+
+    /**
      * LC 1448. Count Good Nodes in Binary Tree
      * @param root
      * @return

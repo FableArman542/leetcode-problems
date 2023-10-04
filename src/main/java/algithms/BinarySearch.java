@@ -11,6 +11,7 @@ public class BinarySearch {
     }
 
     /**
+     * LC 704. Binary Search
      * Returns the index of the `k` value element in the array
      * If not present returns  -1
      * @param arr
@@ -18,7 +19,8 @@ public class BinarySearch {
      * @return
      */
     public int binarySearch(int[] arr, int k, int begin, int end) {
-        int middle = (begin + end + 1) / 2;
+        int middle = begin + ((end-begin) / 2);
+        if (end < begin) return -1;
         if (arr[middle] < k && begin != end) {
             return binarySearch(arr, k, middle + 1, end);
         } else if (arr[middle] > k && begin != end) {
