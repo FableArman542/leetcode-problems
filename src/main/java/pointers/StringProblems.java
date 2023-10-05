@@ -19,6 +19,53 @@ public class StringProblems {
     }
 
     /**
+     * LC 13. Roman to Integer
+     * @param s
+     * @return
+     */
+    public int romanToInt(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+        int res = 0;
+
+        for (int i = 0; i < s.length(); ++i) {
+            int val = map.get(s.charAt(i));
+            if (i != s.length()-1 && val < map.get(s.charAt(i+1))) {
+                val = val*-1;
+            }
+            res += val;
+        }
+
+        return res;
+    }
+
+    /**
+     * LC 12. Integer to Roman
+     * @param num
+     * @return
+     */
+    public String intToRoman(int num) {
+        String[] keys = new String[] {"I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M"};
+        int[] values = new int[] {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = values.length-1; i >= 0; --i) {
+            int a = num/values[i];
+            if (a > 0) {
+                sb.append(keys[i].repeat(a));
+                num = num % values[i];
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
      * LC 2390. Removing Stars From a String
      * @param s
      * @return
